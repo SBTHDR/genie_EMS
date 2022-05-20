@@ -6,6 +6,7 @@ use DateTime;
 use Carbon\Carbon;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Flasher\Prime\FlasherInterface;
 
 class EmployeeController extends Controller
 {
@@ -15,7 +16,7 @@ class EmployeeController extends Controller
         return view('employee.index', compact('currentDate'));
     }
 
-    public function checkIn(Request $request)
+    public function checkIn(Request $request, FlasherInterface $flasher)
     {
         $date = new DateTime();
         $formatDate = $date->format('g:i a');
@@ -29,6 +30,7 @@ class EmployeeController extends Controller
             'checkin' => $formatDate,
         ]);
 
+        $flasher->addSuccess('Checkin Successfully!');
         return redirect()->route('employee.check-out-view');
     }
 
@@ -38,7 +40,7 @@ class EmployeeController extends Controller
         return view('employee.checkout', compact('currentDate'));
     }
 
-    public function checkOut(Request $request)
+    public function checkOut(Request $request, FlasherInterface $flasher)
     {
         $date = new DateTime();
         $formatDate = $date->format('g:i a');
@@ -51,6 +53,7 @@ class EmployeeController extends Controller
             'office_hours' => '10 Hours' // Need to implement using  pivot table
         ]);
 
-        return redirect()->route('employee.index');
+        $flasher->addSuccess('Checkout Successfully!');
+        return redirect('/');
     }
 }

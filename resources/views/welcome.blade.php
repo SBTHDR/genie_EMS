@@ -132,5 +132,6 @@
                 </div>
             </div>
         </div>
+        @flasher_render
     </body>
 </html>

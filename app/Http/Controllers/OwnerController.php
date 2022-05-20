@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Owner;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\EmployeeStoreRequest;
-use App\Models\User;
 
 class OwnerController extends Controller
 {
@@ -38,7 +39,7 @@ class OwnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EmployeeStoreRequest $request)
+    public function store(EmployeeStoreRequest $request, FlasherInterface $flasher)
     {
         User::create([
             'username' => $request->username,
@@ -46,6 +47,7 @@ class OwnerController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $flasher->addSuccess('Employee Created Successfully.');
         return redirect()->route('owner.index');
     }
 
